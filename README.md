@@ -111,4 +111,190 @@ A modular architecture could separate the following responsibilities:
 
 **Important:** This table describes a proposed logical architecture. It does not establish that each agent is currently implemented as a separate executable component.
 
+### 3. Proposed AI processing pipeline
+
+```mermaid
+flowchart TD
+    A[Urban Incident Input] --> B[Input Validation]
+    B --> C[AI-Assisted Interpretation]
+    C --> D[Incident Classification]
+    D --> E[Risk Assessment]
+    E --> F[Location and Context]
+    F --> G[Structured Incident Result]
+    G --> H[Human Review]
+    H --> I[Authorized Notification]
+```
+
+The complete pipeline should be considered an architectural target until each stage is verified in the source code.
+
+### 4. Model evaluation strategy
+
+As the AI functionality develops, evaluate it using:
+
+- Classification precision, recall, and F1-score.
+- Per-category error analysis.
+- Calibration and uncertainty handling.
+- Performance across different lighting and image-quality conditions, where image analysis is supported.
+- False-positive and false-negative rates.
+- Inference latency and API reliability.
+- Human-review requirements for ambiguous or safety-critical cases.
+
+Do not report accuracy percentages or model benchmarks until they have been measured using a documented evaluation dataset.
+
+---
+
+## 🏗️ System Architecture
+
+The current repository configuration supports a React/Vite frontend and a TypeScript/Express server. The intended AI integration can be connected through server-side application logic.
+
+```mermaid
+flowchart LR
+    U[User] --> W[React Web Interface]
+    W --> S[Express and TypeScript Server]
+    S --> A[Google GenAI Integration]
+    S --> N[Nodemailer]
+    A --> R[AI Response]
+    R --> S
+    N --> E[Configured Email Recipient]
+    S --> W
+```
+
+This diagram represents the intended application-level integration. It does not imply that all AI calls, classification steps, or production email workflows have been verified end to end.
+
+### Component responsibilities
+
+- **Frontend:** User interface and interaction.
+- **Express server:** HTTP endpoints and server-side processing.
+- **Google GenAI SDK:** Integration capability for configured generative AI services.
+- **Nodemailer:** Email transport through configured SMTP credentials.
+- **Environment configuration:** Stores API keys and communication credentials outside source code.
+
+No database or persistent incident-storage system is documented here because its implementation has not been established from the visible files.
+
+---
+
+## 🛠️ Technology Stack
+
+| Category | Technology |
+|---|---|
+| Frontend | React 19 |
+| Programming language | TypeScript |
+| Frontend tooling | Vite |
+| Backend | Node.js and Express.js |
+| AI integration | Google GenAI SDK (`@google/genai`) |
+| Email communication | Nodemailer and SMTP |
+| UI icons | Lucide React |
+| Animation | Motion |
+| Styling tools | Tailwind CSS 4 and its Vite integration |
+| Environment variables | dotenv |
+| Package management | npm |
+
+The stack is based on the repository's package configuration. The presence of a dependency does not by itself confirm that every associated feature is implemented or enabled.
+
+---
+
+## 📂 Project Structure
+
+The repository currently contains the following visible root-level files:
+
+```text
+URBAN-PULSE-AI/
+├── README.md
+├── package.json
+├── package-lock.json
+├── server.ts
+├── index.html
+├── metadata.json
+├── tsconfig.json
+├── vite.config.ts
+├── .env.example
+└── .gitignore
+```
+
+The filenames above use their conventional names. Rename the currently suffixed files in the repository to match them before following the commands below.
+
+The application source referenced by `index.html` should also be included in the repository at its expected path, such as `src/main.tsx`, along with any components and styles required by the application.
+
+---
+
+## ⚙️ Installation and Setup
+
+### Prerequisites
+
+Install the following:
+
+- Node.js and npm.
+- Git.
+- A Google GenAI API key if the AI functionality is enabled.
+- SMTP credentials if you want to use the emergency email endpoint.
+
+### Step 1: Clone the repository
+
+```bash
+git clone https://github.com/hiteshcv17/URBAN-PULSE-AI.git
+cd URBAN-PULSE-AI
+```
+
+### Step 2: Correct the filenames
+
+Ensure the repository uses these conventional filenames:
+
+```text
+README.md
+package.json
+package-lock.json
+server.ts
+index.html
+metadata.json
+tsconfig.json
+vite.config.ts
+.env.example
+```
+
+If the files currently include `[1]` in their names, rename them accordingly. Also verify that the frontend source files referenced by `index.html` exist.
+
+### Step 3: Install dependencies
+
+```bash
+npm install
+```
+
+After the package and lock files are correctly named and synchronized, you can use `npm ci` for reproducible installations.
+
+### Step 4: Configure environment variables
+
+Create a local `.env` file in the project root. Add the configuration required for the features you intend to run.
+
+Example:
+
+```dotenv
+GEMINI_API_KEY=your_google_genai_api_key
+
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@example.com
+SMTP_PASS=your_email_app_password
+
+EMERGENCY_EMAIL_RECIPIENT=authorized_recipient@example.com
+```
+
+Use actual credentials only in your local, ignored `.env` file or in your deployment provider's secret manager. Never commit real API keys or email passwords.
+
+### Step 5: Start the development server
+
+```bash
+npm run dev
+```
+
+Open:
+
+```text
+http://localhost:3000
+```
+
+The configured Express server runs on port `3000` and uses Vite middleware for development.
+
+**Troubleshooting:** If startup fails, verify the filenames, package installation, frontend entry point, environment configuration, and terminal error messages. The README and package files must match the actual source layout.
+
+---
 
