@@ -297,4 +297,138 @@ The configured Express server runs on port `3000` and uses Vite middleware for d
 **Troubleshooting:** If startup fails, verify the filenames, package installation, frontend entry point, environment configuration, and terminal error messages. The README and package files must match the actual source layout.
 
 ---
+## 🔌 API Reference
+
+### Emergency email notification
+
+**Endpoint:** `POST /api/send-emergency-email`
+
+**Purpose:** Send an emergency-related email using the configured SMTP transport.
+
+Example request:
+
+```json
+{
+  "location": "Example location",
+  "description": "An urban incident requiring review",
+  "severity": "high"
+}
+```
+
+Optional request fields supported by the current route include:
+
+- `recipient`
+- `numberPlate`
+- `reporterName`
+
+Example success response:
+
+```json
+{
+  "success": true,
+  "message": "Emergency email sent successfully."
+}
+```
+
+The success response is returned only after the server's email-send operation resolves successfully.
+
+The route requires `location`, `description`, and `severity`. Missing required fields produce a `400` response. Email configuration or delivery failures may produce a `500` response.
+
+**Security note:** The current route accepts a recipient override from request data. Before exposing it publicly, restrict recipient selection, validate request fields, escape user-supplied HTML, implement rate limiting, and add appropriate authentication or authorization.
+
+No other API endpoints are documented here because their existence and behavior have not been verified.
+
+---
+
+## 🔐 Security and Limitations
+
+UrbanPulse AI is a prototype and should not be used as an authoritative emergency dispatch system.
+
+Before deploying it publicly:
+
+- Store API keys and SMTP credentials in server-side environment variables.
+- Validate all incoming request data.
+- Escape user-provided content before inserting it into HTML emails.
+- Restrict the emergency email recipient to authorized destinations.
+- Add rate limiting and abuse prevention.
+- Avoid exposing credentials or sensitive incident details in logs.
+- Add authentication and authorization wherever required.
+- Treat AI-generated classifications and severity estimates as advisory.
+- Verify AI responses before using them in safety-related workflows.
+- Provide human review for uncertain or high-impact decisions.
+- Test API failures, invalid inputs, and email delivery failures.
+
+AI outputs can be incomplete or incorrect. The system must not be relied upon to make autonomous emergency decisions without appropriate verification and safeguards.
+
+---
+
+## 🚀 Future Enhancements
+
+Potential development directions include:
+
+- Implementing and documenting distinct AI agents with clearly defined responsibilities.
+- Adding structured incident classification and explainable risk scoring.
+- Integrating verified geospatial and mapping services.
+- Developing a live incident dashboard when reliable data sources are available.
+- Adding incident history and persistence through a suitable database.
+- Introducing authentication and role-based access control.
+- Adding evidence upload validation and privacy protections.
+- Creating an audit trail for AI-assisted decisions.
+- Building a test suite for API routes and model outputs.
+- Evaluating model behavior with documented datasets and reproducible metrics.
+- Adding deployment automation, monitoring, and health checks.
+
+These items are planned enhancements, not claims about existing functionality.
+
+---
+
+## 🧪 Testing and Validation
+
+Before declaring a release ready, verify:
+
+- The application installs from a clean checkout.
+- The development and production commands work.
+- The frontend entry point and all required assets load.
+- The AI integration handles missing credentials and provider errors.
+- The email endpoint rejects invalid input.
+- Email delivery is tested using an authorized recipient.
+- Secrets are not exposed in the frontend bundle or Git history.
+- TypeScript checks and production builds complete successfully.
+- The application works at mobile and desktop screen sizes.
+
+Add automated tests as the corresponding modules become available.
+
+---
+
+## 🤝 Contributing
+
+Contributions that improve architecture, reliability, documentation, accessibility, and responsible AI behavior are welcome.
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Make focused changes.
+4. Test the changes locally.
+5. Update the documentation.
+6. Submit a pull request explaining the implementation and verification performed.
+
+Please do not include API keys, passwords, private incident data, or other sensitive information in commits or issue reports.
+
+---
+
+## 👨‍💻 Author
+
+**Hitesh C V**
+
+- GitHub: [@hiteshcv17](https://github.com/hiteshcv17)
+- Project repository: [URBAN-PULSE-AI](https://github.com/hiteshcv17/URBAN-PULSE-AI)
+
+---
+
+## 📄 License
+
+A license has not been verified from the currently visible repository files. Add a `LICENSE` file and update this section once you have selected a license.
+
+---
+
+*UrbanPulse AI — Exploring AI-assisted intelligence for safer, smarter, and more responsive urban environments.*
 
